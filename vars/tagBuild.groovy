@@ -1,11 +1,11 @@
 def call(String tagName, String message = 'Build tagging') {
     echo "Tagging the build with tag: ${tagName}"
-    
-    // Tagging the current commit in Git
-    sh """
-        git remote -v
-        git tag -a ${tagName} -m '${message}'
-        git push origin ${tagName}
-        git remote -v
-    """
+
+    withCredentials([usernamePassword(credentialsId: '888fe9af-1e5b-4531-b061-0686e0c595d9', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+        sh """
+            git remote -v
+            git tag -a ${tagName} -m "${message}"
+            git push origin ${tagName}
+        """
+    }
 }
