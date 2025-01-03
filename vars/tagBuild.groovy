@@ -9,4 +9,4 @@ def call(String tagName, String message = 'Build tagging') {
             git push origin ${tagName}
         """
     }
-}
+
