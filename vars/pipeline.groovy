@@ -1,3 +1,5 @@
+@Library('my-shared-library') _
+
 def check_out() {
     echo 'Checking out code...'
     checkout scm
