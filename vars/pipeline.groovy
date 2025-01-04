@@ -1,21 +1,21 @@
-def call () { 
-def check_out {
+def call(){
+def check_out() {
     echo 'Checking out code...'
     checkout scm
 }
 
-def setup_java {
+def setup_java() {
     echo 'Setting up Java 17...'
     sh 'sudo apt update'
     sh 'sudo apt install -y openjdk-17-jdk'
 }
 
-def call setup_maven {
+def call setup_maven() {
     echo 'Setting up Maven...'
     sh 'sudo apt install -y maven'
 }
 
-def call build_project {
+def call build_project() {
   echo 'Building project with Maven...'
   sh 'mvn clean package'
 }
@@ -45,6 +45,7 @@ def call validate_app() {
     }
 }
 }   
+}
 
 def call graceful_stop() {
     echo 'Gracefully stopping the Spring Boot application...'
