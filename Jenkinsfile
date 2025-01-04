@@ -13,7 +13,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 script {
-				pipeline.check_out()
+				newjenkins.check_out()
             }
 		      }
         }
@@ -21,7 +21,7 @@ pipeline {
           stage('Set up Java') {
             steps {
                 script {
-				pipeline.setup_java()
+				newjenkins.setup_java()
             		}	
 		}
         }
@@ -29,7 +29,7 @@ pipeline {
           stage('Set up Maven') {
             steps {
                 script {
-				  pipeline.setup_maven()
+				  newjenkins.setup_maven()
             		}
 	    }
         }
@@ -38,22 +38,22 @@ pipeline {
           stage('Building Project') {
             steps {
                 script {
-				  pipeline.build_project()
+				  newjenkins.build_project()
        			}
 		}
         }
 
-          sstage('Upload Artifact') {
+          stage('Upload Artifact') {
             steps {
                 echo 'Uploading artifact...'
-                archiveArtifacts artifacts: 'target/petclinic-0.0.1-SNAPSHOT.jar', allowEmptyArchive: true
+                archiveArtifacts artifacts: 'target/simple-parcel-service-app-1.0-SNAPSHOT.jar', allowEmptyArchive: true
             }
         }
 
           stage('Run Application') {
             steps {
                 script {
-				  pipeline.run_application()
+				  newjenkins.run_application()
             		}
 		}
         }
@@ -61,7 +61,7 @@ pipeline {
           stage('Validating Application') {
             steps {
                 script {
-				  pipeline.validate_app()
+				  newjenkins.validate_app()
             		}
 		}
         }
@@ -69,7 +69,7 @@ pipeline {
           stage('Gracefully Stop Spring Boot App') {
             steps {
                 script {
-				  pipeline.graceful_stop()
+				  newjenkins.graceful_stop()
             }
 		      }
         }
@@ -80,4 +80,3 @@ pipeline {
         }
     }
   }
-
