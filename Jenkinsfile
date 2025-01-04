@@ -19,7 +19,7 @@ pipeline {
         }
 
         stages {
-          stage('Checkout Code') {
+          stage('Set up Java') {
             steps {
                 script {
 				pipeline.setup_java()
@@ -27,7 +27,7 @@ pipeline {
 		      }
         }
         stages {
-          stage('Checkout Code') {
+          stage('Set up Maven') {
             steps {
                 script {
 				  pipeline.setup_maven()
@@ -36,7 +36,7 @@ pipeline {
         }
 
         stages {
-          stage('Checkout Code') {
+          stage('Building Project') {
             steps {
                 script {
 				  pipeline.build_project()
@@ -45,7 +45,7 @@ pipeline {
         }
 
         stages {
-          stage('Checkout Code') {
+          stage('Upload Artifact') {
             steps {
                 script {
 				  pipeline.upload_artifact()
@@ -53,7 +53,7 @@ pipeline {
 		      }
         }
        stages {
-          stage('Checkout Code') {
+          stage('Run Application') {
             steps {
                 script {
 				  pipeline.run_application()
@@ -62,7 +62,7 @@ pipeline {
         }
 
         stages {
-          stage('Checkout Code') {
+          stage('Validating Application') {
             steps {
                 script {
 				  pipeline.validate_app()
@@ -71,7 +71,7 @@ pipeline {
         }
 
        stages {
-          stage('graceful_stop') {
+          stage('Gracefully Stop Spring Boot App') {
             steps {
                 script {
 				  pipeline.upload_artifact()
