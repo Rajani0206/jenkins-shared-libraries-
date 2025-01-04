@@ -1,5 +1,5 @@
 
-def cal check_out() {
+def call check_out() {
     echo 'Checking out code...'
     checkout scm
 }
