@@ -1,9 +1,18 @@
-def createGitTag(String credentialsId = 'github-credentials') {
-    withCredentials([usernamePassword(credentialsId: github-credentials, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-        sh """
-            git config remote.origin.url https://${USERNAME}:${PASSWORD}@github.com/Rajani0206/Parcel-service.git
-            git tag -a v${env.BUILD_NUMBER} -m "Build ${env.BUILD_NUMBER}"
-            git push origin v${env.BUILD_NUMBER}
-        """
+def gitPushWithBuildNumber(repoUrl, branch, credentialsId, buildNumber) {
+    withCredentials([usernamePassword(credentialsId: github-credentials, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+        try {
+            git branch: branch, url: repoUrl 
+            
+            // Create a lightweight tag
+            sh "git tag -f v${buildNumber}" 
+
+            // Push the tag to the remote repository
+            sh "git push origin v${buildNumber}" 
+        } catch (Exception e) {
+            // Handle potential errors during git operations
+            currentBuild.result = 'FAILED'
+            echo "Error pushing tag: ${e.message}"
+            throw e 
+        }
     }
 }
