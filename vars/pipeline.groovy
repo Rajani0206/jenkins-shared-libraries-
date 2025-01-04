@@ -50,3 +50,84 @@ def graceful_stop() {
     echo 'Gracefully stopping the Spring Boot application...'
     sh 'mvn spring-boot:stop'
 }
+
+pipeline {
+    agent { label 'slave' }
+
+    environment {
+        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
+        MAVEN_HOME = '/usr/share/maven'
+        PATH = "${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${env.PATH}"
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                script {
+				check_out()
+            }
+		      }
+        }
+
+          stage('Set up Java') {
+            steps {
+                script {
+				setup_java()
+            		}	
+		}
+        }
+        
+          stage('Set up Maven') {
+            steps {
+                script {
+				  setup_maven()
+            		}
+	    }
+        }
+
+       
+          stage('Building Project') {
+            steps {
+                script {
+				  build_project()
+       			}
+		}
+        }
+
+          stage('Upload Artifact') {
+            steps {
+                echo 'Uploading artifact...'
+                archiveArtifacts artifacts: 'target/simple-parcel-service-app-1.0-SNAPSHOT.jar', allowEmptyArchive: true
+            }
+        }
+
+          stage('Run Application') {
+            steps {
+                script {
+				  run_application()
+            		}
+		}
+        }
+
+          stage('Validating Application') {
+            steps {
+                script {
+				  validate_app()
+            		}
+		}
+        }
+
+          stage('Gracefully Stop Spring Boot App') {
+            steps {
+                script {
+				  graceful_stop()
+            }
+		      }
+        }
+    }
+    post {
+        always {
+            cleanup()
+        }
+    }
+  }
