@@ -1,40 +1,39 @@
-
-def call check_out() {
+def check_out() {
     echo 'Checking out code...'
     checkout scm
 }
 
-def call setup_java() {
+def setup_java() {
     echo 'Setting up Java 17...'
     sh 'sudo apt update'
     sh 'sudo apt install -y openjdk-17-jdk'
 }
 
-def call setup_maven() {
+def setup_maven() {
     echo 'Setting up Maven...'
     sh 'sudo apt install -y maven'
 }
 
-def call build_project() {
+def build_project() {
   echo 'Building project with Maven...'
   sh 'mvn clean package'
 }
 
-def call upload_artifact(String artifactPath) {
+def upload_artifact(String artifactPath) {
     echo 'Uploading artifact...'
     archiveArtifacts artifacts: artifactPath, allowEmptyArchive: true
 }
 
-def call run_application() {
+def run_application() {
     echo 'Running Spring Boot application...'
     sh 'nohup mvn spring-boot:run &'
     sleep(time: 15, unit: 'SECONDS')
 
-    def call publicIp = sh(script: "curl -s https://checkip.amazonaws.com", returnStdout: true).trim()
+    def publicIp = sh(script: "curl -s https://checkip.amazonaws.com", returnStdout: true).trim()
     echo "The application is running and accessible at: http://${publicIp}:8080"
 }
 
-def call validate_app() {
+def validate_app() {
     echo 'Validating that the app is running...'
     def response = sh(script: 'curl --write-out "%{http_code}" --silent --output /dev/null http://localhost:8080', returnStdout: true).trim()
     if (response == "200") {
@@ -47,7 +46,7 @@ def call validate_app() {
 }   
 
 
-def call graceful_stop() {
+def graceful_stop() {
     echo 'Gracefully stopping the Spring Boot application...'
     sh 'mvn spring-boot:stop'
 }
