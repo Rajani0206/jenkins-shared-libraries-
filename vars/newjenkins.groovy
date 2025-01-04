@@ -43,7 +43,6 @@ def validate_app() {
         error("The app did not start correctly!")
     }
 }
-}   
 
 def graceful_stop() {
     echo 'Gracefully stopping the Spring Boot application...'
