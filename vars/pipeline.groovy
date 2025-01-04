@@ -3,18 +3,18 @@ def check_out call() {
     checkout scm
 }
 
-def call setup_java() {
+def setup_java call() {
     echo 'Setting up Java 17...'
     sh 'sudo apt update'
     sh 'sudo apt install -y openjdk-17-jdk'
 }
 
-def call setup_maven() {
+def call setup_maven call() {
     echo 'Setting up Maven...'
     sh 'sudo apt install -y maven'
 }
 
-def call build_project() {
+def call build_project call() {
   echo 'Building project with Maven...'
   sh 'mvn clean package'
 }
