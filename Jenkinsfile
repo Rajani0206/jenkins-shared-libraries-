@@ -18,63 +18,58 @@ pipeline {
 		      }
         }
 
-        stages {
           stage('Set up Java') {
             steps {
                 script {
 				pipeline.setup_java()
-            }
-		      }
+            		}	
+		}
         }
-        stages {
+        
           stage('Set up Maven') {
             steps {
                 script {
 				  pipeline.setup_maven()
-            }
-		      }
+            		}
+	    }
         }
 
-        stages {
+       
           stage('Building Project') {
             steps {
                 script {
 				  pipeline.build_project()
-            }
-		      }
+       			}
+		}
         }
 
-        stages {
-          stage('Upload Artifact') {
+          sstage('Upload Artifact') {
             steps {
-                script {
-				  pipeline.upload_artifact()
+                echo 'Uploading artifact...'
+                archiveArtifacts artifacts: 'target/petclinic-0.0.1-SNAPSHOT.jar', allowEmptyArchive: true
             }
-		      }
         }
-       stages {
+
           stage('Run Application') {
             steps {
                 script {
 				  pipeline.run_application()
-            }
-		      }
+            		}
+		}
         }
 
-        stages {
           stage('Validating Application') {
             steps {
                 script {
 				  pipeline.validate_app()
-            }
-		      }
+            		}
+		}
         }
 
-       stages {
           stage('Gracefully Stop Spring Boot App') {
             steps {
                 script {
-				  pipeline.upload_artifact()
+				  pipeline.graceful_stop()
             }
 		      }
         }
@@ -84,5 +79,5 @@ pipeline {
             cleanup()
         }
     }
-}
-}
+  }
+
